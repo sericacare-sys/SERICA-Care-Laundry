@@ -1,0 +1,15 @@
+{
+  "name": "serica-care",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SERICA Care — Premium Garment Care pre-launch landing page",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "devDependencies": {
+    "vercel": "^37.0.0"
+  }
+}

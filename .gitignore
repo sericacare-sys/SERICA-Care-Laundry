@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Vercel local dev
+.vercel/
+
+# Environment variable files — NEVER commit these
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS artefacts
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+*.suo
+*.user
