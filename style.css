@@ -671,7 +671,8 @@ button{ cursor: pointer; border: none; background: none; font-family: var(--font
 .hero-headline em {
   font-style: italic;
   font-weight: 400;
-  color: var(--color-coco-light);
+  color: var(--color-cream);
+  white-space: nowrap;
 }
 
 /* ── Value proposition ── */
@@ -828,24 +829,31 @@ button{ cursor: pointer; border: none; background: none; font-family: var(--font
   background-color: var(--bg-white);
 }
 
+/* ── Grid: 4-col desktop, gaps between cards ── */
 .services-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1px;                       /* gap via border trick for a gallery feel */
-  background-color: rgba(49, 25, 9, 0.07);
-  border: 1px solid rgba(49, 25, 9, 0.07);
-  border-radius: var(--radius);
-  overflow: hidden;
+  gap: 14px;
 }
 
+/* ── Card shell ── */
 .service-card {
   background-color: var(--bg-white);
-  padding: 40px 32px 36px;
+  border: 1px solid rgba(49, 25, 9, 0.10);
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   position: relative;
-  transition: background-color var(--transition), transform var(--transition);
   overflow: hidden;
+  transition: transform 0.28s var(--ease),
+              box-shadow 0.28s var(--ease),
+              border-color 0.28s var(--ease);
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(49, 25, 9, 0.11);
+  border-color: rgba(153, 75, 37, 0.28);
 }
 
 /* Bottom accent bar on hover */
@@ -862,60 +870,153 @@ button{ cursor: pointer; border: none; background: none; font-family: var(--font
   transition: transform var(--transition);
 }
 
-.service-card:hover {
-  background-color: var(--bg-mid);
-}
-
 .service-card:hover::after {
   transform: scaleX(1);
 }
 
-.service-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: var(--radius);
-  background: rgba(153, 75, 37, 0.07);
-  border: 1px solid rgba(153, 75, 37, 0.14);
+/* ── Photograph wrapper ── */
+.svc-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 10px 10px 0 0;
+  background-color: var(--color-cream-mid); /* placeholder while loading */
+}
+
+.svc-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.45s var(--ease);
+}
+
+.service-card:hover .svc-img {
+  transform: scale(1.03);
+}
+
+/* ── Service icon: overlaps bottom-left of photo ── */
+.svc-img-wrap .service-icon {
+  position: absolute;
+  bottom: -1px;          /* sits flush on the image bottom edge */
+  left: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--color-white);
+  border: 1px solid rgba(153, 75, 37, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-coco);
-  margin-bottom: 24px;
+  box-shadow: 0 2px 10px rgba(49, 25, 9, 0.10);
+  /* Override the old margin-bottom that applied outside the img context */
+  margin-bottom: 0;
   flex-shrink: 0;
-  transition: background-color var(--transition), border-color var(--transition), color var(--transition);
+  transition: background-color var(--transition),
+              border-color var(--transition),
+              color var(--transition);
+  z-index: 1;
 }
 
-.service-card:hover .service-icon {
+.service-card:hover .svc-img-wrap .service-icon {
   background-color: var(--color-coco);
   border-color: var(--color-coco);
   color: var(--color-white);
 }
 
-.service-card h3 {
+/* ── Card body ── */
+/*
+  Plain flex column. Each element carries its own margin.
+  Cross-card alignment on desktop is achieved by giving
+  .svc-desc a min-height equal to exactly 3 lines of text
+  (font-size 0.8375rem × line-height 1.7 × 3 ≈ 72px),
+  so the divider always starts at the same Y regardless of
+  how many words the description uses.
+*/
+.svc-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 24px 20px 32px;
+}
+
+/* Service title */
+.svc-title {
   font-family: var(--font-serif);
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: var(--color-dark);
-  margin-bottom: 10px;
+  margin: 0 0 8px;
   letter-spacing: 0.01em;
   line-height: 1.25;
 }
 
-.service-card p {
-  font-size: 0.875rem;
+/* Description — clamp to 3 lines on all viewports */
+.svc-desc {
+  font-size: 0.8375rem;
   color: var(--color-text-muted);
   line-height: 1.7;
-  flex-grow: 1;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  /* Reserve exactly 3 lines on desktop so divider aligns across all cards */
+  min-height: calc(0.8375rem * 1.7 * 3);
 }
 
+/* Divider — 22px gap above, 16px below */
+.svc-divider {
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: linear-gradient(to right, var(--color-coco), transparent);
+  margin: 22px 0 16px;
+  flex-shrink: 0;
+}
+
+/* "STARTING FROM" label */
+.svc-label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0 0 5px;
+}
+
+/* Main price — no bottom margin needed; card bottom padding handles spacing */
+.svc-price {
+  font-family: var(--font-serif);
+  font-size: 1.9rem;
+  font-weight: 600;
+  color: var(--color-coco);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.svc-unit {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  letter-spacing: 0;
+}
+
+/* Decorative card number */
 .service-card-index {
   position: absolute;
-  bottom: 16px;
-  right: 20px;
+  bottom: 12px;
+  right: 16px;
   font-family: var(--font-serif);
-  font-size: 3.5rem;
+  font-size: 2.25rem;
   font-weight: 700;
-  color: rgba(49, 25, 9, 0.04);
+  color: rgba(49, 25, 9, 0.05);
   line-height: 1;
   pointer-events: none;
   user-select: none;
@@ -923,7 +1024,21 @@ button{ cursor: pointer; border: none; background: none; font-family: var(--font
 }
 
 .service-card:hover .service-card-index {
-  color: rgba(153, 75, 37, 0.07);
+  color: rgba(153, 75, 37, 0.09);
+}
+
+/* Pre-launch disclaimer */
+.svc-disclaimer {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 0.775rem;
+  font-style: italic;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.85;
 }
 
 /* =============================================
@@ -1997,6 +2112,9 @@ button{ cursor: pointer; border: none; background: none; font-family: var(--font
   /* Services: 2-column */
   .services-grid { grid-template-columns: repeat(2, 1fr); }
 
+  /* Services — tablet */
+  .svc-price { font-size: 1.65rem; }
+
   /* Benefits: 2→1 handled below in mobile */
   .benefit-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
   .benefit-grid--four { grid-template-columns: repeat(2, 1fr); }
@@ -2403,6 +2521,12 @@ button{ cursor: pointer; border: none; background: none; font-family: var(--font
 
   /* Services */
   .services-grid { grid-template-columns: 1fr; }
+
+  /* Services — mobile: drop the min-height description reservation */
+  .svc-desc  { min-height: 0; }
+  .svc-body  { padding: 20px 18px 28px; }
+  .svc-price { font-size: 1.75rem; }
+  .svc-disclaimer { margin-top: 24px; font-size: 0.75rem; }
 
   /* Benefits */
   .benefit-grid { grid-template-columns: 1fr; }
@@ -2957,3 +3081,10 @@ dialog.pp-modal.pp-modal--open {
     font-size: 1.5rem;
   }
 }
+
+
+/* =============================================
+   SERVICES — Responsive overrides
+   (grid column changes are in the existing
+   media query blocks further below)
+   ============================================= */
