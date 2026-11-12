@@ -413,12 +413,12 @@ contactForm.addEventListener('submit', async e => {
 function showSuccessModal(name) {
   _showModal({
     id:      'earlyAccessModal',
-    iconSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                   width="32" height="32">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>`,
+    iconSvg: `<img src="assets/branding/SERICACARE.png"
+                   alt="SERICA Care"
+                   class="prompt-logo-img"
+                   width="120" height="40"
+                   loading="eager"
+                   decoding="sync" />`,
     title:   'You\'re on the List!',
     body:    'Thank you for joining SERICA Care Early Access. Stay connected for updates about our upcoming launch in BSD City.',
     cta:     'Got It',
@@ -497,7 +497,8 @@ function injectModalStyles() {
     .prompt-backdrop{position:absolute;inset:0;background:rgba(49,25,9,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
     .prompt-panel{position:relative;z-index:1;background:#fff;border-top:3px solid #994B25;border-radius:4px;padding:48px 44px;max-width:460px;width:100%;box-shadow:0 32px 80px rgba(49,25,9,.22);animation:promptIn .3s cubic-bezier(0,0,.2,1);}
     @keyframes promptIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-    .prompt-icon{width:56px;height:56px;border-radius:4px;background:rgba(153,75,37,.1);border:1px solid rgba(153,75,37,.2);display:flex;align-items:center;justify-content:center;color:#994B25;margin-bottom:22px;}
+    .prompt-icon{width:120px;height:65px;border-radius:8px;background:#311909;border:none;display:flex;align-items:center;justify-content:center;padding:10px 16px;margin-bottom:24px;}
+    .prompt-logo-img{display:block;width:100%;height:100%;object-fit:contain;filter:brightness(0) invert(1);opacity:.92;}
     .prompt-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.75rem;font-weight:600;color:#311909;margin-bottom:12px;line-height:1.15;}
     .prompt-body{font-size:.9375rem;color:#6b5a4e;line-height:1.75;margin-bottom:28px;font-weight:300;}
     .prompt-cta{width:100%;justify-content:center;}
