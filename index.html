@@ -194,13 +194,13 @@
           <!-- Inline submission error -->
           <p class="hero-form-submit-error" id="submitError" role="alert" aria-live="polite"></p>
 
-          <p class="hero-form-privacy">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                 width="12" height="12" aria-hidden="true">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-            Informasi kamu hanya digunakan untuk keperluan Early Access SERICA Care.
+          <p class="hero-form-privacy hero-form-privacy--centered">
+            Data kamu hanya digunakan untuk Early Access SERICA Care.&#32;<button
+              type="button"
+              class="pp-trigger"
+              id="privacyPolicyTrigger"
+              aria-haspopup="dialog"
+            >Baca Privacy Policy</button>
           </p>
         </form><!-- /hero-form -->
 
@@ -794,6 +794,135 @@
       </div>
     </div>
   </footer>
+
+  <!-- ========== PRIVACY POLICY MODAL ========== -->
+  <!--
+    Triggered by #privacyPolicyTrigger inside the hero form.
+    Completely independent of the Early Access Thank You popup.
+    id="privacyPolicyModal" — unique, no overlap with #earlyAccessModal.
+  -->
+  <dialog
+    class="pp-modal"
+    id="privacyPolicyModal"
+    aria-labelledby="ppModalTitle"
+    aria-describedby="ppModalSubtitle"
+  >
+    <!-- Backdrop — click-outside to close -->
+    <div class="pp-backdrop" id="ppBackdrop" aria-hidden="true"></div>
+
+    <!-- Modal panel -->
+    <div class="pp-panel" role="document">
+
+      <!-- Header row: title + close button -->
+      <div class="pp-header">
+        <div class="pp-header-text">
+          <h2 class="pp-title" id="ppModalTitle">Privacy Policy</h2>
+          <p class="pp-subtitle" id="ppModalSubtitle">SERICA Care — Early Access</p>
+        </div>
+        <button
+          type="button"
+          class="pp-close"
+          id="ppModalClose"
+          aria-label="Tutup Privacy Policy"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+               width="20" height="20" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Scrollable content area -->
+      <div class="pp-body">
+
+        <section class="pp-section">
+          <h3 class="pp-section-title">1. Informasi yang Kami Kumpulkan</h3>
+          <p class="pp-text">
+            SERICA Care mengumpulkan informasi yang diberikan melalui formulir Early Access, yaitu:
+          </p>
+          <ul class="pp-list">
+            <li>Nama lengkap.</li>
+            <li>Instagram username.</li>
+          </ul>
+          <p class="pp-text">
+            Informasi tersebut diberikan oleh pengunjung saat melakukan pendaftaran.
+          </p>
+        </section>
+
+        <section class="pp-section">
+          <h3 class="pp-section-title">2. Tujuan Pengumpulan Informasi</h3>
+          <p class="pp-text">Informasi yang dikumpulkan digunakan untuk:</p>
+          <ul class="pp-list">
+            <li>Mencatat ketertarikan terhadap layanan SERICA Care.</li>
+            <li>Mengelola daftar calon pelanggan Early Access.</li>
+            <li>Memberikan informasi terkait perkembangan dan peluncuran SERICA Care di BSD City.</li>
+            <li>Menghubungi calon pelanggan melalui Instagram terkait program Early Access.</li>
+          </ul>
+        </section>
+
+        <section class="pp-section">
+          <h3 class="pp-section-title">3. Penyimpanan Data</h3>
+          <p class="pp-text">
+            Informasi pendaftaran Early Access disimpan menggunakan Google Sheets yang dikelola
+            oleh pihak pengelola SERICA Care. Data dikirim melalui sistem website yang menggunakan
+            Vercel dan Google Apps Script. Akses terhadap database dibatasi kepada pihak yang
+            berwenang mengelola pendaftaran.
+          </p>
+        </section>
+
+        <section class="pp-section">
+          <h3 class="pp-section-title">4. Penggunaan dan Perlindungan Informasi</h3>
+          <p class="pp-text">
+            SERICA Care menggunakan data pendaftaran untuk keperluan Early Access sesuai tujuan
+            yang dijelaskan dalam kebijakan ini. SERICA Care berupaya membatasi akses terhadap
+            informasi tersebut dan menggunakan sistem pengelolaan data yang sesuai dengan
+            kebutuhan layanan.
+          </p>
+        </section>
+
+        <section class="pp-section">
+          <h3 class="pp-section-title">5. Permintaan Terkait Data Pribadi</h3>
+          <p class="pp-text">
+            Pengunjung dapat mengajukan pertanyaan mengenai penggunaan data atau permintaan
+            penghapusan informasi pendaftaran melalui kanal kontak resmi SERICA Care.
+          </p>
+          <!-- ⚠️ PERLU DILENGKAPI sebelum publikasi:
+               Tambahkan kanal kontak resmi (Instagram, email, atau WhatsApp)
+               setelah akun/kontak resmi SERICA Care dikonfirmasi. -->
+          <p class="pp-notice">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                 width="14" height="14" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            Kanal kontak resmi SERICA Care akan ditambahkan setelah diluncurkan.
+          </p>
+        </section>
+
+        <section class="pp-section pp-section--last">
+          <h3 class="pp-section-title">6. Perubahan Privacy Policy</h3>
+          <p class="pp-text">
+            SERICA Care dapat memperbarui Privacy Policy apabila terdapat perubahan dalam
+            pengelolaan data atau layanan Early Access. Setiap pembaruan akan mencerminkan
+            praktik pengelolaan data yang berlaku pada saat itu.
+          </p>
+        </section>
+
+      </div><!-- /pp-body -->
+
+      <!-- Footer row -->
+      <div class="pp-footer">
+        <button type="button" class="btn btn-primary pp-close-btn" id="ppModalCloseBottom">
+          Tutup
+        </button>
+      </div>
+
+    </div><!-- /pp-panel -->
+  </dialog><!-- /privacyPolicyModal -->
 
   <script src="script.js"></script>
 </body>

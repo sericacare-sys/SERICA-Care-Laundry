@@ -504,3 +504,137 @@ function injectModalStyles() {
   `;
   document.head.appendChild(style);
 }
+
+/* =============================================
+   PRIVACY POLICY MODAL
+   Completely independent of the Early Access
+   Thank You popup. Uses <dialog> element.
+   IDs: privacyPolicyModal, ppModalClose,
+        ppModalCloseBottom, ppBackdrop,
+        privacyPolicyTrigger
+   ============================================= */
+
+(function () {
+  'use strict';
+
+  /* ── Element references ── */
+  const ppModal        = document.getElementById('privacyPolicyModal');
+  const ppTrigger      = document.getElementById('privacyPolicyTrigger');
+  const ppClose        = document.getElementById('ppModalClose');
+  const ppCloseBottom  = document.getElementById('ppModalCloseBottom');
+  const ppBackdrop     = document.getElementById('ppBackdrop');
+
+  /* Guard: bail if any required element is missing */
+  if (!ppModal || !ppTrigger || !ppClose || !ppCloseBottom || !ppBackdrop) return;
+
+  /* ── State ── */
+  let ppIsOpen        = false;
+  let ppScrollY       = 0;      /* saved scroll position for body-lock */
+  let ppKeydownHandle = null;   /* stored so it can be removed on close */
+
+  /* ── All focusable items inside the modal panel ── */
+  function getPpFocusable() {
+    return Array.from(
+      ppModal.querySelectorAll(
+        'button:not([disabled]), [href], input:not([disabled]), ' +
+        '[tabindex]:not([tabindex="-1"])'
+      )
+    );
+  }
+
+  /* ── Open ── */
+  function openPpModal() {
+    if (ppIsOpen) return;
+    ppIsOpen = true;
+
+    /* Prevent body scroll — save position first */
+    ppScrollY = window.scrollY;
+    document.body.style.overflow = 'hidden';
+
+    /* Show the dialog */
+    ppModal.classList.remove('pp-modal--closing');
+    ppModal.classList.add('pp-modal--open');
+
+    /* Focus the top close button after the entrance animation */
+    setTimeout(() => ppClose.focus(), 50);
+
+    /* Keyboard handler: Escape + focus trap */
+    ppKeydownHandle = function (e) {
+      if (e.key === 'Escape') {
+        closePpModal();
+        return;
+      }
+
+      if (e.key !== 'Tab') return;
+
+      const focusable = getPpFocusable();
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last  = focusable[focusable.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', ppKeydownHandle);
+  }
+
+  /* ── Close ── */
+  function closePpModal() {
+    if (!ppIsOpen) return;
+    ppIsOpen = false;
+
+    /* Play exit animation, then hide */
+    ppModal.classList.add('pp-modal--closing');
+
+    setTimeout(() => {
+      ppModal.classList.remove('pp-modal--open', 'pp-modal--closing');
+
+      /* Restore body scroll */
+      document.body.style.overflow = '';
+    }, 210);  /* matches animation duration */
+
+    /* Remove keyboard handler */
+    if (ppKeydownHandle) {
+      document.removeEventListener('keydown', ppKeydownHandle);
+      ppKeydownHandle = null;
+    }
+
+    /* Return focus to the trigger link */
+    ppTrigger.focus();
+  }
+
+  /* ── Event bindings ── */
+
+  /* Trigger: open modal — must not submit the form */
+  ppTrigger.addEventListener('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    openPpModal();
+  });
+
+  /* Top close button */
+  ppClose.addEventListener('click', closePpModal);
+
+  /* Bottom close button */
+  ppCloseBottom.addEventListener('click', closePpModal);
+
+  /* Click-outside on backdrop */
+  ppBackdrop.addEventListener('click', closePpModal);
+
+  /* Prevent clicks on the panel from bubbling to the backdrop */
+  ppModal.querySelector('.pp-panel').addEventListener('click', function (e) {
+    e.stopPropagation();
+  });
+
+})();
